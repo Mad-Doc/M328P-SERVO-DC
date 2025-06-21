@@ -29,5 +29,10 @@
   Gros réducteur, ect) l'utilisation d'un capteur réel de homing est recommandé!.
   Version Pré finale du drivers !
 
+  le code recevras sans doute encore des améliorations au fil du temps, actuellement le code est fonctionel et tres réactif , le pid doit etre 
+  ajusté selon votre moteur , le réglage peu etre tres délicat selon le type de moteur
+
+  le code a ete optimisé pour un Mini-ibt 1ere version équipé du l6201p !
+
   l'auteur se décharge de toute résponsabilité en cas d'accident ou autre suite a l'usage non approprié de ce code
      
