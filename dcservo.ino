@@ -31,20 +31,6 @@
   Gros réducteur, ect) l'utilisation d'un capteur réel de homing est recommandé!.
   Version Pré finale du drivers !
 
-
-  choses a revoir
-  1: timing des pulses
-     si grbl mis sur $0=3 : ok avec $102=9.6,$112=97500,$132=1000 , si plus de pulses en entrée
-     le moteur bloque puis recommançe a tourner une fois le signal moins rapide, rates des pas si fréquence d'entrée trop 
-     élévée ? soucis code ou soucis optocoupleur ? 
-  2: sensorless homing
-     si valeur a par exemple 0.3% le moteur ne tourne pas en butée , détecte trop tot 
-     si valeur a par exemple 0.32% le moteur force trop en butée , le zéro n'est pas correct ! 
-     prévoir dégagement des butée de 5mm et le zero a 3mm de cette valeur (impossible a faire sur GRBL)
-     revoir calcul de mesure courant et ou sortie pour plus de sensibilité !
-  3: modifier code pour usage via soft PC
-     revoir le code pour retiré le mode de controle serie "simple" afin de privilégier l'usage du soft pc
-     pour les réglages , surtout pour le réglage du PID qui est assez délicat !
 */
 #include <EEPROM.h>
 #include <PID_v2.h>
