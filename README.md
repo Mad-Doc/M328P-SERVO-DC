@@ -27,7 +27,7 @@
   !selon le moteur et sa charge réel en fonctionnement, le réglage doit etre le plus bas possible pour une efficacité sure!
   si le resultat n'est pas exploitable, ou si l'axe utilise une forte démultiplication (vis trapésoidale ou a bille,
   Gros réducteur, ect) l'utilisation d'un capteur réel de homing est recommandé!.
-  en option un ... permet de passer la résolution de l'encodeur en 4x , ici le code fonctionne en 1x , du au limitation des pin "timer" disponible
+  en option un ls7141 permet de passer la résolution de l'encodeur en 4x , ici le code fonctionne en 1x , du au limitation des pin "timer" disponible
   ! en ce cas le nombre de pulse sera plus important et les vitesse maximum du moteur seront plus basse (surtout sur des roue codeuse de forte résolution
   je recommande de ne pas dépasser les 1000ppr sous peine de surcharger le m328p ! ) 
   Version Pré finale du drivers !
