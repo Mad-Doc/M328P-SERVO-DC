@@ -52,7 +52,7 @@ byte skip=5;
 
 /*----------------section pid----------------*/
 double kp=5,ki=0,kd=0.00; //valeur initialisation PID avant chargement eeprom
-double kpd=01.0000, kid=000.0000, kdd=000.0000; //valeur par défaut pid en cas de soucis pid
+double kpd=01.0000, kid=000.0000, kdd=000.0000; //valeur par défaut pid en cas d'instabilité moteur
 double input=0; 
 double output=0;
 double setpoint=0;
@@ -66,7 +66,7 @@ int iterationCount = 0;
 
 /*--------------section encodeur-------------*/
 volatile long encoder0Pos = 0;
-long target1 = 0;  // destination location at any moment
+long target1 = 0;  
 
 /*-----------------HomeFunc------------------*/
 bool isHome = true;
@@ -98,7 +98,7 @@ void setup() {
   pciSetup(encoder0PinB);                //sens du comptage
   attachInterrupt(1, encoderInt, CHANGE);// encoder pin on interrupt 1 - pin 3 ,comptage encodeur
   attachInterrupt(0, countStep, RISING); // step  input on interrupt 0 - pin 2 ,comptage STEP
-  TCCR1B = TCCR1B & 0b11111000 | 1;      // set 31Kh PWM motor frequency a modifier por 20khz pour gagné en temp cpu !
+  TCCR1B = TCCR1B & 0b11111000 | 1;      // set 31Khz PWM motor frequency 
   Serial.begin (115200);                 // active le port serie
   help();                                // affiche l'aide dans la console serie
   recoverPIDfromEEPROM();                // charge le pid défini en eeprom
@@ -123,7 +123,7 @@ void HomeFunc(){          //fonction homing sensorless !
  percentAmp = (curVal * 0.097751711); //convertit la mesure digital en pourcentage
   if (percentAmp >= Sens) {
     homeState = HIGH; 
-  } else if (percentAmp < Sens) { // attention  la valeur "10" donne l'hysteresie , a ajusté sans doute via port serie ! 
+  } else if (percentAmp < Sens) { 
     homeState = LOW; 
   }
   digitalWrite(ENDSTOP, homeState);
@@ -134,7 +134,7 @@ void calculPID(){
       input = encoder0Pos; 
       setpoint=target1;
       myPID.SetMode(AUTOMATIC);
-      if(input==setpoint)pwmOut(0); else pwmOut(output*(power/100)); //deadband a inserer ici 
+      if(input==setpoint)pwmOut(0); else pwmOut(output*(power/100)); //deadband a inserer ici ?
       while(!myPID.Compute()){digitalWrite(STATUS, HIGH);}
     }else {
       enabled = false;
@@ -182,7 +182,7 @@ void process_line() {
           case 'I': ki = value.toFloat(); update_pid(); Serial.print("i: "); Serial.println(ki, 4); break;
           case 'D': kd = value.toFloat(); update_pid(); Serial.print("d: "); Serial.println(kd, 4); break;
           case 'X': target1 = value.toInt(); x = 0; counting = true; for (int i = 0; i < 300; i++) pos[i] = 0; break;
-          case 'C': target1 = value.toInt(); Serial.print("Allez a: "); Serial.println(target1); break;
+          case 'C': target1 = value.toInt(); Serial.print("Allez a: "); Serial.print(target1); Serial.println(" Pulse."); break;
           case 'T': auto1 = !auto1; break;
           case 'L': auto2 = !auto2; break;
           case 'A': basepid(); update_pid(); break;
@@ -225,7 +225,7 @@ void Valueactive(){
   Serial.print(F(" Entrée Enabled: "));
   if (enabled == true){ Serial.println("ON"); } else{ Serial.println("OFF"); }
 }
-void opt1(){ //code de vérification pour activation du software tuning , n° de serie !
+void opt1(){ //code de vérification pour activation du programme software tuning + n° de modele !
   Serial.println(123456789); //valeur a changer pour avoir un code hexadécimal en caractere acsii ! 
   Serial.println("M328pDCservo"); //indique le model de controlleur !
 }
@@ -249,7 +249,7 @@ void help() {
   Serial.println(F(" I = gain integral, exemple I123.34                   "));
   Serial.println(F(" D = gain derivé, exemple D123.34                     "));
   Serial.println(F(" Q = position encodeur et état sortie PWM             "));
-  Serial.println(F(" C = destination moteur, exemple X123 = position 123  "));
+  Serial.println(F(" C = destination moteur, exemple C123 = position 123  "));
   Serial.println(F(" T = séquence mouvement aléatoire du moteur  !DANGER! "));
   Serial.println(F(" V = affiche les valeur active                        ")); 
   Serial.println(F(" W = enregistre les valeurs dans l'eeprom             ")); 
